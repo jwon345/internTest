@@ -1,0 +1,10 @@
+/build*
+/.vscode
+/.cache
+/Testing*
+.DS_Store
+
+compile_commands.json
+
+#White list
+!.vscode/intern-tech-test.code-workspace
