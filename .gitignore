@@ -3,6 +3,8 @@
 /.cache
 /Testing*
 .DS_Store
+/out
+/.vs
 
 compile_commands.json
 
