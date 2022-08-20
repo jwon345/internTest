@@ -1,94 +1,42 @@
-# Objective
+#Design descisions.
 
-At Halter, we need our collars to store commands that direct each collar to perform a specific task. Examples:
-- Move a cow from point A to point B
-- Hold a cow within an area of interest, i.e. a break on a farm
+My assumptions are that no new commands will be added during runtime.
 
-A command is a data structure that contains all the information necessary for the collar to perform a specific task as above. As a starting point, it must have the following fields:
-- command ID, unique identifier
-- command type, e.g. whether to move a cow from point A to point B or to hold a cow within a certain area
-- command parameters specific to the type
+##Command
+###unique identifier 
+			I've decided to use a unsigned 8 bit integer to reduce memory usage. 
+			to make it more readable, an enum is used->CommandName, to make indexing more readable
 
-Design a system that can store these types of commands in a way that allows for:
-- performant (fast) lookups
-- efficiency, consuming the least amount of memory
-- easy to add new types of commands
+###Command Type.
+			the Command type follows the same structure of the Unique identifier.
+			instead of using strings taking up 8bits per character. a single byte can be used to represent
+			a command type with an enum -> commandType to make it readable
+		
+###Parameters.
+			This one is too vague to optimise for. therefore i've decided that 2 paramters would be enough
+			to cover all, if not most of the commands parameter needs.
+			since i believe accuracy would be an important aspect, a float was used to represent non integer			numbers. if more accuracy were needed doubles could be substituted.
 
-## Requirements
+			
+		The usage of Enums
+			these were used to reduce the need of having strings/equivalent to use for indentification, which 			takes a big chuck of memory
 
-- You can choose to implement this in C or C++, whichever language you are more comfortable with
+##List of Commands
+###An array of the command struct.	
+			having a Fixed number elements does reduce the ease of use in terms of adding in new commands.
+			but does lower the memory usage of the program, as the array size can be carefully allocated 
+			with each command before runtime. it provides greater memory usage.
+	
+			although if commands were needed to be allocated during runtime I believe a linked list would be 			a solution that doesn't require external libraries.
 
-## Constraints
+##How to use 
+	
+	To add a new command. a commandName should be added in order to the commandName enum.
+	if the list is full, the defined ListSize should be incremented 
+	then in the constructor, call the function addCommand. parameters, commandName, CommandType -> this is used 	to describe the function of the command and what parameters will be used.
+	Paramter A, Paramters B if needed. 
 
-Most embedded systems have hard constraints, whether it be limited memory, real-timeness, power etc. However, for this project, we want you to focus on one of them - limited memory. This is a trade-off us embedded/firmware folks frequently make. Hence:
+	referencing the command is done by calling the class fucntion commandstore.run(commandName) ///index
+		where pseudo command execution is sorted and committed.
 
-- You CANNOT use dynamic memory (i.e. malloc/calloc/new etc.) and must statically and deterministically allocate all memory
-- Do not use any C++ containers/data structures (e.g. std::string, std::map etc.) or third-party libraries that use dynamic memory under the hood
-
-## Deliverables:
-
-- Your implementation, which could be one or multiple files in the include/source directories
-- Tests that demonstrate how your design/implementation works
-- A readme explaining your key design choices and any other relevant information
-
-We've included a template for tests using doctest. Feel free to use these or use your own framework (gtest, catch2, cpputest...) if you prefer.
-
-# Build instructions
-
-## System Requirements
-
-You'll need a C++ compiler (tested on gcc11),  CMake and Make.
-
-Installing those should be easy on Unix based machines; install from your package manager (apt for ubuntu, pacman for arch, brew for mac, etc).
-
-If you're using Windows, we suggest using WSL and installing a version of Linux and use that with VSCode or your favourite editor.
-
-## The Makefile
-
-The project is configured as a CMake project, which isn't the easiest to wrap your head around if you've not used it before. So we've included a Makefile which wraps around the CMake commands.
-
-If you're using the existing template, you can type in the project folder the following
-
-**Build and run all the tests.**
-
-`$make test`
-
-# Debug
-
-Feel free to use your favourite IDE/Editor. Although we've set up a a VSCode workspace with debug configurations for linux environment.
-First install the recommended extensions in the workspace.
-
-1. Open the workspace using vscode by clicking File -> Open Workspace
-2. Select `.vscode/intern-tech-test.code-workspace`
-3. Left under `Run and Debug` there are two configurations which will either attach to the main or the test programs.
-
-# Submission
-
-Create an archive of the repository like so:
-`git bundle create <filename> master`
-
-And email your completed project back to us.
-
-Please provide a README on how to run your project, including any dependencies.
-
-# Code of Honour
-
-- When accepting and subsequently submitting this project to Halter, you agree that you have not plagiarised any code from any other source (online, another person etc.). If you do end up using some open source library/project for inspiration, be very explicit about this and tell us why.
-- You agree to keep this challenge confidential and not release any details about it to any other person(s), or any other source (online or otherwise).
-- Essentially, we want to know what YOU can do, ultimately we want to hire the best people, that fit with our culture and our vision for the future. If we make a hire acting on information that isn't truthful, then it will make your job more difficult, as you may not have the skills for the role.
-- Any violation of the above clauses will result in an immediate termination of the interview process.
-
-# Assessment Criteria
-
-Your entire assignment will be judged holistically and there is no strict marking rubric, however, we will be taking the following into account when assessing your application:
-
-- Appropriate documentation explaining the design choices you made
-- Clean, readable, efficient/performant and extensible code with well-commented APIs
-- Appropriate error/exception handling
-- Clean, readable unit tests
-
-You have 48 hours to complete the assessment, starting from when you receive the assessment.
-
-# Questions
-
-Please email us if you have any questions at all.
+	there are also getter fucntions to view the contents of each command
