@@ -1,14 +1,13 @@
 #pragma once
 #include <iostream>
-
 namespace Halter {
-	
+    
+	#define ListSize 10     //constant for the size of the list -> try fully utilize 
 	enum commandType {
-		Null,HoldPosition, MoveAB, MoveToA, Bound,
-  };    
+		Null,MoveToA, MoveAToB, HoldPosition, MoveToAandHoldPosition  };    //define types of commands
 
-    enum commandName {
-
+    enum commandName {  //for convienience of naming ID of commands
+        MoveToMainFarm
     };
 	
     struct command {
@@ -17,26 +16,25 @@ namespace Halter {
       float inputParameterA;
       float inputParameterB;
     };
-
-	
-	void testfunction() { std::cout << "testing this";
-	}
+    
 
   class CommandStore {
 		public:
+    
+    CommandStore();
 
-    uint8_t getCommandType(command command); // get the command type 
-    void runCommand(command command);
-  private:
-    uint8_t indexAppender = 0;
-    command commandList[10];  //range predfined, needs to be manually incremented with increase of commands 	
-			//no linked lists
-		//HashMap containing -> Id(int), Type(string?), Parameter(Enum)
+    uint8_t getCommandType(uint8_t commandIndex); // get the command type 
+    void runCommand(uint8_t commandIndex);
 
+    //adding extra commands in other parts of the code?
     void addCommand(uint8_t id, uint8_t commandType, float ParameterA, float ParatmerB);
     void addCommand(uint8_t id, uint8_t commandType, float ParameterA);
     void addCommand(uint8_t id, uint8_t commandType);
 
+
+  private:
+    uint8_t indexAppender = 0;
+    command commandList[ListSize];  //range predfined, needs to be manually incremented with increase of commands 	
 
 
   };

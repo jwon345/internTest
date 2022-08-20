@@ -8,13 +8,10 @@
 
 using namespace Halter;
 
-
 TEST_CASE("Example test") {
-//  int a = 5;
-//  int b = 3;
-//  CHECK(a == b);
+	CommandStore a;
+  printf("hello world");
+        a.runCommand(0);
+	CHECK(0 == MoveAToB);
 
-	testfunction();
-	std::cout << "hello";
-}
-
+} 
