@@ -8,44 +8,95 @@ CommandStore::CommandStore() {
 	CommandStore::indexAppender = 0;
 	
 	//adding commands to the list
-	addCommand(0, MoveAToB, 1, 2);
-    addCommand(1, HoldPosition);
+	addCommand(MoveFromBarnToFeild1, MoveAToB, 1, 2); //(Enum CommandName, Enum CommandType, A, B)
+    addCommand(Hold, HoldPosition);// without CommandName
 
 }
 
 void CommandStore::addCommand(uint8_t id, uint8_t commandType, float ParameterA, float ParatmerB) {
-
-  commandList[indexAppender].id = id;
-  commandList[indexAppender].commandType = commandType;
-  commandList[indexAppender].inputParameterA = ParameterA;
-  commandList[indexAppender].inputParameterB = ParatmerB;
-
-  indexAppender++;
-	return;
+  try {
+    if (indexAppender < ListSize) 
+	{
+		commandList[indexAppender].id = id;
+		commandList[indexAppender].commandType = commandType;
+		commandList[indexAppender].inputParameterA = ParameterA;
+		commandList[indexAppender].inputParameterB = ParatmerB;
+		indexAppender++;
+		return;
+	}
+	else
+	{
+		throw indexAppender;
+	}
+  }	
+	catch(int index) {
+    printf("index too high %u", index);
+  }
 }
 
 void CommandStore::addCommand(uint8_t id, uint8_t commandType, float ParameterA) {
-  commandList[indexAppender].id = id;
-  commandList[indexAppender].commandType = commandType;
-  commandList[indexAppender].inputParameterA = ParameterA;
-  indexAppender++;
 
-	return;
+  try {
+    if (indexAppender < ListSize) 
+	{
+		commandList[indexAppender].id = id;
+		commandList[indexAppender].commandType = commandType;
+		commandList[indexAppender].inputParameterA = ParameterA;
+		commandList[indexAppender].inputParameterB = NULL;
+		indexAppender++;
+		return;
+	}
+	else
+	{
+		throw indexAppender;
+	}
+  }	
+	catch(int index) {
+    printf("index too high %u", index);
+  }
+
   
 }
 
 void CommandStore::addCommand(uint8_t id, uint8_t commandType) {
-  commandList[indexAppender].id = id;
-  commandList[indexAppender].commandType = commandType;
-  indexAppender++;
-	return;
+  try {
+    if (indexAppender < ListSize) 
+	{
+		commandList[indexAppender].id = id;
+		commandList[indexAppender].commandType = commandType;
+		commandList[indexAppender].inputParameterA = NULL;
+		commandList[indexAppender].inputParameterB = NULL;
+		indexAppender++;
+		return;
+	}
+	else
+	{
+		throw indexAppender;
+	}
+  }	
+	catch(int index) {
+    printf("index too high %u", index);
+  }
 }
+
+
+//Getters for command componenets
 
 uint8_t CommandStore::getCommandType(uint8_t commandIndex) { 
 	return CommandStore::commandList[commandIndex].commandType;
 }
+uint8_t CommandStore::getCommandID(uint8_t commandIndex) { 
+	return CommandStore::commandList[commandIndex].id;
+}
+float CommandStore::getCommandParameterA(uint8_t commandIndex) { 
+	return CommandStore::commandList[commandIndex].inputParameterA;
+}
+float CommandStore::getCommandParameterB(uint8_t commandIndex) { 
+	return CommandStore::commandList[commandIndex].inputParameterB;
+}
 
 
+//without real function, prinf to represent command execution
 void CommandStore::runCommand(uint8_t commandIndex) {
 
 	switch (CommandStore::commandList[commandIndex].commandType) { 
